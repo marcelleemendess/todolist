@@ -24,6 +24,7 @@ const Todo = () => {
     const [tasksRemaining, setTasksRemaining] = useState(0);
     const [value, setValue] = useState('')
     const [tasks, setTasks] = useState([]);
+    const [useruid, setUseruid] = useState()
 
 
     useEffect(() => {
@@ -35,40 +36,48 @@ const Todo = () => {
         if (data) {
             setTasks(JSON.parse(data));
         }
+
+        setUseruid(localStorage.getItem("useruid"));
+
     },[]);
 
     useEffect(() => {
         localStorage.setItem("my-tasks", JSON.stringify(tasks))
     });
 
+    useEffect(() => {
+        setUseruid(localStorage.getItem("useruid"));
+    },[tasks])
+
     const handleChange = e => {
         e.preventDefault();
-        
         setValue(e.target.value)
     }
     
     const handleSubmit = e => {
         e.preventDefault();
-        
         addTask(value)
+        setValue('')
     }
 
     const addTask = title => {
         if (title === '') {
             alert("Please, enter a task!")
         } else {
-            const newTasks = [...tasks, { title, completed: false, user: auth.currentUser.uid }]
+            const newTasks = [...tasks, { title, completed: false, user: useruid }]
             setTasks(newTasks)
         }     
     };
 
-    const completeTask = (index) => {
+    const completeTask = (index,e) => {
+        e.preventDefault()
         const newTasks = [...tasks];
         newTasks[index].completed = true;
         setTasks(newTasks)
     }
 
-    const removeTask = (index) => {
+    const removeTask = (index, e) => {
+        e.preventDefault()
         const newTasks = [...tasks];
         newTasks.splice(index, 1);
         setTasks(newTasks);
@@ -92,14 +101,24 @@ const Todo = () => {
                     <div className="tasks" >
                         {tasks.length >= 1 ? tasks.map((task, index) => (
                             <div key={index}>
-                                {task.user === auth.currentUser.uid ?
-                                    <Task
-                                        key={index}
-                                        task={task}
-                                        index={index}
-                                        completeTask={completeTask}
-                                        removeTask={removeTask}
-                                    />
+                                {task.user === useruid.replace(/['"]+/g, '') ?
+                                    // <Task
+                                    //     key={index}
+                                    //     task={task}
+                                    //     index={index}
+                                    //     completeTask={completeTask}
+                                    //     removeTask={removeTask}
+                                    // />
+                                    <div
+                                        className="task"
+                                        style={{ textDecoration: task.completed ? "line-through" : "" }}
+                                    >
+                                        <p className="p_tasks">{task.title}</p>
+                                        <div className='div_btns'>
+                                            <button onClick={(e) => completeTask(index, e)}>Complete</button>
+                                            <button style={{ background: "red" }} onClick={(e) =>removeTask(index,e)}>X</button>
+                                        </div>
+                                    </div>
                                 : null}
                             </div>
                         )) : 'Enter a Task'}

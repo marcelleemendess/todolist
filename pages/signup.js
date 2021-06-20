@@ -72,6 +72,10 @@ const Signup = () => {
             emailRef.current.value,
             passwordRef.current.value
         ).then(async (user) => {
+
+            localStorage.setItem("useruid", JSON.stringify(auth.currentUser.uid))
+
+
             console.log(user.user.uid)
             router.push('/')
         }).catch(err => {
@@ -84,7 +88,11 @@ const Signup = () => {
         auth.signInWithEmailAndPassword(
             emailRef.current.value,
             passwordRef.current.value
-        ).then( async (user) => {
+        ).then(async (user) => {
+            
+            
+            localStorage.setItem("useruid", JSON.stringify(auth.currentUser.uid))
+
             console.log(user.user.uid)
             router.push(`/`)
         }).catch(err => {
