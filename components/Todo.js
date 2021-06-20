@@ -89,9 +89,9 @@ const Todo = () => {
                         onChange={handleChange}
                     />
                     <button className="add" onClick={handleSubmit}>Add Task</button>
-                    <div className="tasks">
+                    <div className="tasks" >
                         {tasks.length >= 1 ? tasks.map((task, index) => (
-                            <>
+                            <div key={index}>
                                 {task.user === auth.currentUser.uid ?
                                     <Task
                                         key={index}
@@ -101,7 +101,7 @@ const Todo = () => {
                                         removeTask={removeTask}
                                     />
                                 : null}
-                            </>
+                            </div>
                         )) : 'Enter a Task'}
                     </div>
                 </form>
