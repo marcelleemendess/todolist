@@ -13,6 +13,8 @@ function Navbar() {
         auth.signOut()
             .then(() => {
                 console.log('Signed Out')
+                  localStorage.clear();
+
                 router.push('/signup')
             })
             .catch((error) => {

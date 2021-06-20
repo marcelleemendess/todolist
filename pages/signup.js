@@ -68,6 +68,7 @@ const Signup = () => {
     
     const signUp = async (e) => {
         e.preventDefault();
+          localStorage.clear();
         auth.createUserWithEmailAndPassword(
             emailRef.current.value,
             passwordRef.current.value
@@ -85,6 +86,7 @@ const Signup = () => {
 
     const signIn = async (e) => {
         e.preventDefault();
+          localStorage.clear();
         auth.signInWithEmailAndPassword(
             emailRef.current.value,
             passwordRef.current.value
