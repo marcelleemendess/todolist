@@ -1,7 +1,8 @@
 import styles from '../styles/Home.module.css'
 import { useState, useEffect } from 'react';
 import { auth } from '../lib/firebase';
-import Navbar from "../components/Navbar";
+import router from 'next/router';
+import { useRouter } from 'next/router';
 
 
 const Task = ({ task, index, completeTask, removeTask}) => {
@@ -25,6 +26,7 @@ const Todo = () => {
     const [value, setValue] = useState('')
     const [tasks, setTasks] = useState([]);
     const [useruid, setUseruid] = useState()
+    const router = useRouter();
 
 
     useEffect(() => {
@@ -84,8 +86,7 @@ const Todo = () => {
     }
 
     return (
-        <>
-            <Navbar/>
+            
             <div className="todo-container">
                 <div className="header">TODO - ITEMS</div>
                 <div>Pending tasks ({tasksRemaining})</div>
@@ -96,12 +97,17 @@ const Todo = () => {
                         value={value}
                         placeholder="Add a new task"
                         onChange={handleChange}
-                    />
-                    <button className="add" onClick={handleSubmit}>Add Task</button>
+                />
+                {!useruid ?
+<>
+                                    <button className="add" onClick={(e) => (e.preventDefault(), router.push('/signup'))}>Add Task</button>
+</>
+                :
+                                    <button className="add" onClick={handleSubmit}>Add Task</button>
+}
                     <div className="tasks" >
                         {tasks.length >= 1 ? tasks.map((task, index) => (
                             <div key={index}>
-                                {console.log(task.user, useruid)}
                                 {(task.user === useruid.replace(/['"]+/g, '')) || (task.user === useruid) ?
                                     // <Task
                                     //     key={index}
@@ -115,10 +121,18 @@ const Todo = () => {
                                         style={{ textDecoration: task.completed ? "line-through" : "" }}
                                     >
                                         <p className="p_tasks">{task.title}</p>
-                                        <div className='div_btns'>
-                                            <button onClick={(e) => completeTask(index, e)}>Complete</button>
-                                            <button style={{ background: "red" }} onClick={(e) =>removeTask(index,e)}>X</button>
-                                        </div>
+                                        {useruid ? 
+                                        
+                                            <div className='div_btns'>
+                                                <button onClick={(e) => completeTask(index, e)}>Complete</button>
+                                                <button style={{ background: "red" }} onClick={(e) =>removeTask(index,e)}>X</button>
+                                            </div>
+                                        :
+                                            <div className='div_btns'>
+                                                <button onClick={() => router.push('/signup')}>Complete</button>
+                                                <button style={{ background: "red" }} onClick={() => router.push('/signup')}>X</button>
+                                            </div>    
+                                        }
                                     </div>
                                 : null}
                             </div>
@@ -126,7 +140,6 @@ const Todo = () => {
                     </div>
                 </form>
             </div>
-        </>
     )
 }
 
