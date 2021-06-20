@@ -102,7 +102,7 @@ const Todo = () => {
                         {tasks.length >= 1 ? tasks.map((task, index) => (
                             <div key={index}>
                                 {console.log(task.user, useruid)}
-                                {task.user === useruid ?
+                                {(task.user === useruid.replace(/['"]+/g, '')) || (task.user === useruid) ?
                                     // <Task
                                     //     key={index}
                                     //     task={task}
