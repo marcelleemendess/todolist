@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
-import { auth, firestore } from '../lib/firebase';
+import { auth, firestore } from '../../lib/firebase';
 
 function Navbar() {
 
@@ -9,12 +9,9 @@ function Navbar() {
 
     const logout = async (e) => {
         e.preventDefault();
-        
         auth.signOut()
             .then(() => {
                 console.log('Signed Out')
-                  localStorage.clear();
-
                 router.push('/signup')
             })
             .catch((error) => {
@@ -23,7 +20,6 @@ function Navbar() {
             });
     } 
     
-
     return (
         <nav className="navbar">
             <ul>
