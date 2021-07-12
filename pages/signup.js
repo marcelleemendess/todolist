@@ -18,8 +18,8 @@ const Signup = () => {
       passwordRef.current.value
     ).then(async (user) => {
 
-    localStorage.setItem("useruid", JSON.stringify(auth.currentUser.uid))
-      console.log(user.user.uid)
+    // localStorage.setItem("useruid", JSON.stringify(auth.currentUser.uid))
+      // console.log(user.user.uid)
       router.push('/')
     }).catch(err => {
       console.log(err)
@@ -32,8 +32,8 @@ const Signup = () => {
         emailRef.current.value,
         passwordRef.current.value
     ).then(async (user) => {
-      localStorage.setItem("useruid", JSON.stringify(auth.currentUser.uid))
-      console.log(user.user.uid)
+      // localStorage.setItem("useruid", JSON.stringify(auth.currentUser.uid))
+      // console.log(user.user.uid)
       router.push(`/`)
     }).catch(err => {
         console.log(err)
