@@ -4,20 +4,19 @@ import { useRouter } from 'next/router'
 import { auth, firestore } from '../../lib/firebase';
 
 function Navbar() {
-
     const router = useRouter()
 
     const logout = async (e) => {
         e.preventDefault();
         auth.signOut()
-            .then(() => {
-                console.log('Signed Out')
-                router.push('/signup')
-            })
-            .catch((error) => {
-                console.error('Sign Out Error', error);
-
-            });
+        .then(() => {
+            console.log('Signed Out')
+            router.push('/signup')
+        })
+        .catch((error) => {
+            console.error('Sign Out Error', error);
+            alert(error.message)
+        });
     } 
     
     return (

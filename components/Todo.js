@@ -15,9 +15,9 @@ const Todo = ({user}) => {
     const [changeDocId, setChangeDocId] = useState()
     
     //LOADING TASKS ON MOUNT
-    useEffect(async() => {
+    useEffect(async () => {
         // if data in ls, then set task state to that data
-        const data = localStorage.getItem("my-tasks");
+        // const data = localStorage.getItem("my-tasks");
         let newData = []
         
         await db.collection("my-tasks").where("useruid", "==", useruid)
@@ -25,6 +25,7 @@ const Todo = ({user}) => {
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     newData.push(doc.data())
+
                 });
             })
             .catch((error) => {
@@ -35,25 +36,21 @@ const Todo = ({user}) => {
             // setTasks(JSON.parse(data));
             setTasks(newData)
         }
-        // set useruid to ls useruid (always have this if someone logged in because it is stored on signup.js)
-        // setUseruid(localStorage.getItem("useruid"));
-    },[useruid]);
+    }, [useruid]);
 
     // UPDATING TASKS ON STATE CHANGE
-    // persist tasks in local storage: after adding the new task to existing task state, replace the task state with the new tasks object
     useEffect(async () => {
-        // localStorage.setItem("my-tasks", JSON.stringify(tasks))
         const docRef = db.collection("my-tasks").doc(changeDocId);
-        if(fbAction==='completeTask') {            
+        if(fbAction === 'completeTask') {            
             return await docRef.update({
                     completed: true
             })
         }
-        if(fbAction==='removeTask') {
+        if(fbAction === 'removeTask') {
             docRef.delete()
         }
 
-        if(fbAction==='addTask') {
+        if(fbAction === 'addTask') {
             docRef.set({
                 title: value,
                 docid: changeDocId,
@@ -61,14 +58,13 @@ const Todo = ({user}) => {
                 useruid: useruid
             })
         }
+
     }, [tasks])
-
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
         addTask(value)
-        setValue('')
+        
     }
 
     const addTask = (title) => {
@@ -80,7 +76,8 @@ const Todo = ({user}) => {
             setTasks(newTasks)
             setFbAction('addTask')
             setChangeDocId(docid)
-        }     
+           
+        }
     };
 
     const completeTask = (index,e, docid) => {
@@ -112,37 +109,35 @@ const Todo = ({user}) => {
                     value={value}
                     placeholder="Add a new task"
                     onChange={(e) => setValue(e.target.value)}
-            />
-            {!useruid ?
-                <>
-                    <button className="add" onClick={(e) => (e.preventDefault(), router.push('/signup'))}>Add Task</button>
-                </>
-            :
-                <button className="add" onClick={handleSubmit}>Add Task</button>
-            }
+                />
+                {!useruid ?
+                    <>
+                        <button className="add" onClick={(e) => (e.preventDefault(), router.push('/signup'))}>Add Task</button>
+                    </>
+                :
+                    <button className="add" onClick={handleSubmit}>Add Task</button>
+                }
                 <div className="tasks" >
                     {tasks.length >= 1 ? tasks.map((task, index) => (
                         <div key={index}>
-                            {/* {(task.user === useruid.replace(/['"]+/g, '')) || (task.user === useruid) ? */}
-                                <div
-                                    className="task"
-                                    style={{ textDecoration: task.completed ? "line-through" : "" }}
-                                >
-                                    <p className="p_tasks">{task.title}</p>
-                                    {useruid ? 
-                                    
-                                        <div className='div_btns'>
-                                            <button onClick={(e) => completeTask(index, e, task.docid)}>Complete</button>
-                                            <button style={{ background: "red" }} onClick={(e) =>removeTask(index,e, task.docid)}>X</button>
-                                        </div>
-                                    :
-                                        <div className='div_btns'>
-                                            <button onClick={() => router.push('/signup')}>Complete</button>
-                                            <button style={{ background: "red" }} onClick={() => router.push('/signup')}>X</button>
-                                        </div>    
-                                    }
-                                </div>
-                            {/* : null} */}
+                            <div
+                                className="task"
+                                style={{ textDecoration: task.completed ? "line-through" : "" }}
+                            >
+                                <p className="p_tasks">{task.title}</p>
+                                {useruid ? 
+                                
+                                    <div className='div_btns'>
+                                        <button onClick={(e) => completeTask(index, e, task.docid)}>Complete</button>
+                                        <button style={{ background: "red" }} onClick={(e) =>removeTask(index,e, task.docid)}>X</button>
+                                    </div>
+                                :
+                                    <div className='div_btns'>
+                                        <button onClick={() => router.push('/signup')}>Complete</button>
+                                        <button style={{ background: "red" }} onClick={() => router.push('/signup')}>X</button>
+                                    </div>    
+                                }
+                            </div>
                         </div>
                     )) : 'Enter a Task'}
                 </div>

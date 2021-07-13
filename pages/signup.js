@@ -2,8 +2,6 @@ import { auth } from '../lib/firebase';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 
-
-
 const Signup = () => {
   const router = useRouter();
   const [toggleLogin, setToggleLogin] = useState(false)
@@ -18,11 +16,12 @@ const Signup = () => {
       passwordRef.current.value
     ).then(async (user) => {
 
-    // localStorage.setItem("useruid", JSON.stringify(auth.currentUser.uid))
+     //localStorage.setItem("useruid", JSON.stringify(auth.currentUser.uid))
       // console.log(user.user.uid)
       router.push('/')
     }).catch(err => {
-      console.log(err)
+      // console.log(err)
+      alert(err.message)
     })
   }
     
@@ -32,11 +31,12 @@ const Signup = () => {
         emailRef.current.value,
         passwordRef.current.value
     ).then(async (user) => {
-      // localStorage.setItem("useruid", JSON.stringify(auth.currentUser.uid))
+      //localStorage.setItem("useruid", JSON.stringify(auth.currentUser.uid))
       // console.log(user.user.uid)
       router.push(`/`)
     }).catch(err => {
-        console.log(err)
+      // console.log(err)
+      alert(err.message)
     })
   }
 
