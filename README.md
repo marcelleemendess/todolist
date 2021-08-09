@@ -7,7 +7,7 @@ Live version available here:
 
 ## About the App: 
 
-The project is a functional To-do list application with authentication, you can create a account and add, complete or delete your tasks. 
+The project is a functional To-do list application with authentication, you can create an account and add, complete or delete your tasks. 
 
 
 
